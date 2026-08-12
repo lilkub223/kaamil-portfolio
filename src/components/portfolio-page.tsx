@@ -143,7 +143,7 @@ export function PortfolioPage() {
                   Looking for
                 </p>
                 <p className="mt-4 text-sm leading-8 text-ink md:text-base">
-                  Software engineering internships and new grad roles where backend, systems, or full-stack work is taken seriously and strong fundamentals matter.
+                  New grad software engineering, QA, and related tech roles where backend, systems, or full-stack work is taken seriously and strong fundamentals matter.
                 </p>
               </article>
             </div>
@@ -277,7 +277,7 @@ export function PortfolioPage() {
         </SectionShell>
 
         <SectionShell
-          description="Direct ways to reach me for software engineering internships and early-career roles."
+          description="Direct ways to reach me for new grad software engineering, QA, and other early-career tech roles."
           eyebrow="06 / Contact"
           id="contact"
           isActive={activeSection === "contact"}
@@ -308,7 +308,7 @@ export function PortfolioPage() {
                 </ActionLink>
               </div>
               <p className="mt-5 text-sm leading-7 text-muted">
-                I am open to internship and new grad opportunities in backend, systems, and full-stack software engineering.
+                I am open to new grad opportunities in backend, systems, full-stack engineering, QA, and related technical roles.
               </p>
             </article>
 

@@ -61,7 +61,7 @@ export const portfolioData = {
       "Software engineering portfolio focused on backend engineering, systems work, concurrency, compilers, and practical full-stack development.",
   },
   name: "Kaamil Khan",
-  headline: "CS student building backend systems, compilers, and full-stack software.",
+  headline: "Recent CS graduate focused on backend systems, compilers, and full-stack software.",
   location: "Chicago, IL",
   email: "kaamil12355@icloud.com",
   phone: "630-656-0478",
@@ -80,14 +80,14 @@ export const portfolioData = {
   ] satisfies readonly NavItem[],
   hero: {
     summary:
-      "I am a Computer Science student at DePaul University in Chicago, graduating in June 2026 with a 3.9 GPA. My strongest work is in backend systems, APIs, concurrency, compiler design, and practical full-stack applications.",
+      "I graduated from DePaul University in June 2026 with a B.S. in Computer Science and a 3.9 GPA. My strongest work is in backend systems, APIs, concurrency, compiler design, and practical full-stack applications.",
     roles:
-      "I am looking for software engineering internships and new grad roles where I can contribute on backend, systems, or full-stack teams.",
+      "I am looking for new grad roles in software engineering, QA, and related tech positions, especially on backend, systems, or full-stack teams.",
     callouts: [
-      "DePaul University",
-      "June 2026",
+      "DePaul CS Graduate",
+      "Graduated June 2026",
       "3.9 GPA",
-      "Open to internships + new grad roles",
+      "Open to new grad roles",
     ],
     snapshot: [
       {
@@ -132,7 +132,7 @@ export const portfolioData = {
       "Full-stack applications backed by SQL, containers, and service boundaries",
     ],
     roles:
-      "I am aiming for software engineering roles where strong fundamentals matter, especially backend, systems, or full-stack teams with high engineering standards.",
+      "I am aiming for new grad software engineering, QA, and related tech roles where strong fundamentals matter, especially on backend, systems, or full-stack teams.",
   },
   projects: [
     {
@@ -452,7 +452,7 @@ export const portfolioData = {
     summary:
       "The resume is the quickest one-page view of my education, project work, experience, and links.",
     bullets: [
-      "DePaul University Computer Science, graduating June 2026",
+      "DePaul University Computer Science, graduated June 2026",
       "3.9 GPA and Dean's List since 2022",
       "Projects in backend systems, compilers, concurrency, and full-stack development",
       "Experience in troubleshooting, analytics, and process improvement",
@@ -460,7 +460,7 @@ export const portfolioData = {
   },
   contact: {
     cta:
-      "If you are hiring for software engineering internships or early-career roles, email is the best way to reach me.",
+      "If you are hiring for new grad software engineering, QA, or other early-career tech roles, email is the best way to reach me.",
   },
 } as const;
 

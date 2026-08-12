@@ -31,10 +31,12 @@ export const metadata: Metadata = {
     template: "%s | Kaamil Khan",
   },
   description:
-    "Portfolio for Kaamil Khan, a DePaul University Computer Science student focused on backend engineering, systems thinking, compilers, concurrency, and full-stack development.",
+    "Portfolio for Kaamil Khan, a DePaul University Computer Science graduate focused on backend engineering, systems thinking, compilers, concurrency, full-stack development, and early-career tech roles.",
   keywords: [
     "Kaamil Khan",
     "software engineer",
+    "QA engineer",
+    "quality assurance",
     "backend engineer",
     "systems",
     "concurrency",
@@ -48,7 +50,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Kaamil Khan | Software Engineering Portfolio",
     description:
-      "Backend, systems, concurrency, compiler, and full-stack work from a DePaul University Computer Science student graduating in June 2026.",
+      "Backend, systems, concurrency, compiler, and full-stack work from a DePaul University Computer Science graduate who finished in June 2026.",
     url: siteUrl,
     siteName: portfolioData.site.name,
     locale: "en_US",
@@ -58,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Kaamil Khan | Software Engineering Portfolio",
     description:
-      "Engineering-focused portfolio with case studies in distributed systems, compiler construction, and concurrent Java systems.",
+      "Portfolio with case studies in distributed systems, compiler construction, concurrent Java systems, and full-stack development.",
   },
 };
 

@@ -65,7 +65,7 @@ export default function OpenGraphImage() {
                 color: "#334155",
               }}
             >
-              DePaul University Computer Science student graduating in June 2026.
+              DePaul University Computer Science graduate, June 2026.
             </div>
           </div>
 
@@ -76,7 +76,7 @@ export default function OpenGraphImage() {
               gap: "14px",
             }}
           >
-            {["Distributed systems", "Compiler design", "Concurrent Java systems"].map((item) => (
+            {["Distributed systems", "Compiler design", "QA + software roles"].map((item) => (
               <div
                 key={item}
                 style={{
