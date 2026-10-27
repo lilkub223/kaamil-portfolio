@@ -1,79 +1,55 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Manrope, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
-
 import { portfolioData } from "@/data/portfolio";
 import "./globals.css";
 
-const bodyFont = Manrope({
+const inter = Inter({
   subsets: ["latin"],
   variable: "--font-body",
+  display: "swap",
 });
-
-const displayFont = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  variable: "--font-display",
-});
-
-const monoFont = IBM_Plex_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["400", "500"],
-});
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://kaamil-portfolio-one.vercel.app";
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  ...(siteUrl
+    ? { metadataBase: new URL(siteUrl), alternates: { canonical: "/" } }
+    : {}),
   title: {
-    default: "Kaamil Khan | Software Engineering Portfolio",
+    default: "Kaamil Khan | Software Engineer",
     template: "%s | Kaamil Khan",
   },
-  description:
-    "Portfolio for Kaamil Khan, a DePaul University Computer Science graduate focused on backend engineering, systems thinking, compilers, concurrency, full-stack development, and early-career tech roles.",
+  description: portfolioData.site.description,
   keywords: [
     "Kaamil Khan",
     "software engineer",
-    "QA engineer",
-    "quality assurance",
-    "backend engineer",
-    "systems",
-    "concurrency",
-    "compiler design",
+    "backend",
     "full-stack",
+    "Java",
+    "Python",
+    "software testing",
+    "Chicago",
     "DePaul University",
   ],
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
-    title: "Kaamil Khan | Software Engineering Portfolio",
-    description:
-      "Backend, systems, concurrency, compiler, and full-stack work from a DePaul University Computer Science graduate who finished in June 2026.",
-    url: siteUrl,
+    title: "Kaamil Khan | Software Engineer",
+    description: portfolioData.site.description,
     siteName: portfolioData.site.name,
     locale: "en_US",
     type: "website",
+    ...(siteUrl ? { url: siteUrl } : {}),
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kaamil Khan | Software Engineering Portfolio",
-    description:
-      "Portfolio with case studies in distributed systems, compiler construction, concurrent Java systems, and full-stack development.",
+    title: "Kaamil Khan | Software Engineer",
+    description: portfolioData.site.description,
   },
 };
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body
-        className={`${bodyFont.variable} ${displayFont.variable} ${monoFont.variable} antialiased`}
-      >
+      <body className={inter.variable}>
         {children}
         <Analytics />
       </body>

@@ -1,78 +1,93 @@
 "use client";
+import { useEffect, useState } from "react";
+import { portfolioData } from "@/data/portfolio";
+import { Arrow } from "./icons";
 
-import { ActionLink } from "@/components/action-link";
-import { cn } from "@/lib/cn";
-
-type NavbarProps = {
-  activeSection: string;
-  email: string;
-  navItems: ReadonlyArray<{
-    id: string;
-    label: string;
-  }>;
-  resumeUrl: string;
-};
-
-export function Navbar({ activeSection, email, navItems, resumeUrl }: NavbarProps) {
+export function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("");
+  useEffect(() => {
+    let scheduled = false;
+    const update = () => {
+      const position = window.scrollY + 150;
+      let current = "";
+      for (const item of portfolioData.navItems) {
+        const section = document.getElementById(item.id);
+        if (section && section.offsetTop <= position) current = item.id;
+      }
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 16
+      )
+        current = "contact";
+      setActive(current);
+      scheduled = false;
+    };
+    const onScroll = () => {
+      if (!scheduled) {
+        scheduled = true;
+        requestAnimationFrame(update);
+      }
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (
+        event.key === "Escape" &&
+        document
+          .getElementById("menu-toggle")
+          ?.getAttribute("aria-expanded") === "true"
+      ) {
+        setOpen(false);
+        document.getElementById("menu-toggle")?.focus();
+      }
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, []);
   return (
-    <header className="sticky top-4 z-50 px-4 pt-4">
-      <div className="mx-auto max-w-container">
-        <div className="rounded-[24px] border border-line bg-[rgba(255,255,255,0.82)] px-4 py-3 shadow-panel backdrop-blur md:px-5">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+    <header className="site-header">
+      <div className="container header-inner">
+        <a className="wordmark" href="/#top" aria-label="Kaamil Khan, home">
+          kaamil<span>.</span>
+        </a>
+        <button
+          id="menu-toggle"
+          className="menu-toggle"
+          aria-expanded={open}
+          aria-controls="primary-nav"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? "Close" : "Menu"}
+          <span aria-hidden="true">{open ? "−" : "+"}</span>
+        </button>
+        <nav
+          id="primary-nav"
+          className={open ? "primary-nav is-open" : "primary-nav"}
+          aria-label="Main navigation"
+        >
+          {portfolioData.navItems.map((item) => (
             <a
-              className="flex shrink-0 flex-col text-left"
-              href="#top"
+              key={item.id}
+              href={`/#${item.id}`}
+              aria-current={active === item.id ? "location" : undefined}
+              onClick={() => setOpen(false)}
             >
-              <span className="font-display text-base font-semibold tracking-tight text-ink">
-                Kaamil Khan
-              </span>
-              <span className="mt-1 font-mono text-[11px] uppercase tracking-section text-muted">
-                Backend • Systems • Full-stack
-              </span>
+              {item.label}
             </a>
-
-            <nav
-              aria-label="Section navigation"
-              className="no-scrollbar overflow-x-auto lg:flex-1 lg:px-6"
-            >
-              <div className="flex min-w-max items-center gap-1 rounded-full bg-canvasStrong/90 p-1">
-                {navItems.map((item) => {
-                  const isActive = activeSection === item.id;
-
-                  return (
-                    <a
-                      key={item.id}
-                      className={cn(
-                        "rounded-full px-3.5 py-2 text-sm font-medium transition duration-200",
-                        isActive
-                          ? "bg-white text-ink shadow-sm"
-                          : "text-muted hover:text-ink",
-                      )}
-                      href={`#${item.id}`}
-                    >
-                      {item.label}
-                    </a>
-                  );
-                })}
-              </div>
-            </nav>
-
-            <div className="hidden shrink-0 items-center gap-3 md:flex">
-              <ActionLink
-                href={resumeUrl}
-                target="_blank"
-              >
-                Resume
-              </ActionLink>
-              <ActionLink
-                href={`mailto:${email}`}
-                variant="secondary"
-              >
-                Email
-              </ActionLink>
-            </div>
-          </div>
-        </div>
+          ))}
+          <a
+            className="nav-resume"
+            href={portfolioData.links.resume}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Resume <Arrow diagonal />
+          </a>
+        </nav>
       </div>
     </header>
   );
