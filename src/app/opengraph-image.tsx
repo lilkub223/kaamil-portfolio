@@ -1,115 +1,59 @@
 import { ImageResponse } from "next/og";
-
-export const alt = "Kaamil Khan software engineering portfolio";
-export const size = {
-  width: 1200,
-  height: 630,
-};
+export const alt = "Kaamil Khan — Reliable systems. Useful software.";
+export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-
 export default function OpenGraphImage() {
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        background: "#fafbf8",
+        padding: "65px 75px",
+        fontFamily: "sans-serif",
+        color: "#172820",
+      }}
+    >
       <div
         style={{
-          height: "100%",
-          width: "100%",
           display: "flex",
-          flexDirection: "column",
           justifyContent: "space-between",
-          padding: "48px",
-          background:
-            "linear-gradient(135deg, #f8f6ef 0%, #f2efe7 55%, #e8e3d8 100%)",
-          color: "#0f172a",
-          fontFamily: "sans-serif",
+          fontSize: 22,
+          color: "#26634b",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "12px",
-              maxWidth: "760px",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 18,
-                letterSpacing: "0.28em",
-                textTransform: "uppercase",
-                color: "#0f766e",
-              }}
-            >
-              Kaamil Khan
-            </div>
-            <div
-              style={{
-                fontSize: 64,
-                lineHeight: 1.05,
-                fontWeight: 700,
-              }}
-            >
-              Backend, systems, concurrency, and compiler-focused engineering.
-            </div>
-            <div
-              style={{
-                fontSize: 28,
-                lineHeight: 1.4,
-                color: "#334155",
-              }}
-            >
-              DePaul University Computer Science graduate, June 2026.
-            </div>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "14px",
-            }}
-          >
-            {["Distributed systems", "Compiler design", "QA + software roles"].map((item) => (
-              <div
-                key={item}
-                style={{
-                  border: "1px solid rgba(15,23,42,0.12)",
-                  borderRadius: 999,
-                  padding: "10px 18px",
-                  background: "rgba(255,255,255,0.7)",
-                  fontSize: 20,
-                }}
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            border: "1px solid rgba(15,23,42,0.12)",
-            borderRadius: 28,
-            padding: "24px 28px",
-            background: "rgba(255,255,255,0.82)",
-            fontSize: 24,
-          }}
-        >
-          <div>React | FastAPI | Node.js | PostgreSQL | Docker</div>
-          <div style={{ color: "#475569" }}>kaamil12355@icloud.com</div>
-        </div>
+        <span>Kaamil Khan / Software engineer</span>
+        <span>Chicago, IL</span>
       </div>
-    ),
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          fontSize: 88,
+          letterSpacing: "-4px",
+          lineHeight: 1.05,
+        }}
+      >
+        <span>Reliable systems.</span>
+        <span style={{ color: "#26634b" }}>Useful software.</span>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          borderTop: "1px solid #dce2db",
+          paddingTop: 25,
+          justifyContent: "space-between",
+          fontSize: 21,
+          color: "#5d6862",
+        }}
+      >
+        <span>Backend · Full-stack · Software testing</span>
+        <span>DePaul CS / Class of 2026</span>
+      </div>
+    </div>,
     size,
   );
 }

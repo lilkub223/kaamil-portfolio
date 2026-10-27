@@ -1,244 +1,130 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-import { ActionLink } from "@/components/action-link";
-import { Footer } from "@/components/footer";
-import { ProjectDiagram } from "@/components/project-diagram";
-import { ProjectPreviewPanel } from "@/components/project-preview-panel";
 import { portfolioData, getProjectBySlug } from "@/data/portfolio";
+import { ProjectDiagram } from "@/components/project-diagram";
+import { Footer } from "@/components/footer";
+import { Arrow, GithubIcon } from "@/components/icons";
 
-type ProjectPageProps = {
-  params: {
-    slug: string;
-  };
-};
-
+type ProjectPageProps = { params: { slug: string } };
 export function generateStaticParams() {
-  return portfolioData.projects.map((project) => ({
-    slug: project.slug,
-  }));
+  return portfolioData.projects.map((project) => ({ slug: project.slug }));
 }
-
 export function generateMetadata({ params }: ProjectPageProps): Metadata {
   const project = getProjectBySlug(params.slug);
-
-  if (!project) {
-    return {};
-  }
-
+  if (!project) return {};
   return {
-    title: `${project.title} Case Study`,
+    title: `${project.title} — Project`,
     description: project.summary,
-    alternates: {
-      canonical: `/projects/${project.slug}`,
+    alternates: { canonical: `/projects/${project.slug}` },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} | Kaamil Khan`,
+      description: project.summary,
+      images: ["/twitter-image"],
     },
     openGraph: {
       title: `${project.title} | Kaamil Khan`,
       description: project.summary,
       type: "article",
+      images: [
+        {
+          url: "/opengraph-image",
+          width: 1200,
+          height: 630,
+          alt: "Kaamil Khan software engineering portfolio",
+        },
+      ],
       url: `/projects/${project.slug}`,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${project.title} | Kaamil Khan`,
-      description: project.summary,
     },
   };
 }
-
 export default function ProjectPage({ params }: ProjectPageProps) {
   const project = getProjectBySlug(params.slug);
-
-  if (!project) {
-    notFound();
-  }
-
+  if (!project) notFound();
+  const index = portfolioData.projects.findIndex(
+    (item) => item.slug === project.slug,
+  );
+  const next =
+    portfolioData.projects[(index + 1) % portfolioData.projects.length];
   return (
-    <div className="pb-6">
-      <main className="mx-auto flex max-w-container flex-col gap-8 px-4 pt-6">
-        <section className="rounded-[34px] border border-line bg-surface px-5 py-6 shadow-panel md:px-8 md:py-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <Link
-              className="text-sm text-muted transition hover:text-ink"
-              href="/"
+    <div id="top">
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <header className="site-header">
+        <div className="container header-inner">
+          <Link className="wordmark" href="/">
+            kaamil<span>.</span>
+          </Link>
+          <Link className="text-link" href="/#projects">
+            ← All projects
+          </Link>
+        </div>
+      </header>
+      <main id="main" className="container case-study">
+        <div className="case-heading">
+          <p className="eyebrow">
+            {project.category} / {project.dates}
+          </p>
+          <h1>{project.title}</h1>
+          <p className="case-lead">{project.summary}</p>
+          <div className="case-actions">
+            <a
+              className="button button-primary"
+              href={project.github}
+              target="_blank"
+              rel="noreferrer"
             >
-              &larr; Back to portfolio
-            </Link>
-
-            <div className="flex flex-wrap gap-3">
-              <ActionLink
-                external
-                href={project.github}
-                variant="secondary"
-              >
-                GitHub
-              </ActionLink>
-              <ActionLink href={portfolioData.links.resume} target="_blank">
-                Resume
-              </ActionLink>
-            </div>
+              <GithubIcon /> View source <Arrow diagonal />
+            </a>
+            <p className="stack">{project.stack.join(" / ")}</p>
           </div>
-
-          <div className="mt-8 grid gap-6 lg:grid-cols-[1.15fr,0.85fr]">
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-section text-accent">
-                {project.theme}
-              </p>
-              <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight text-ink md:text-5xl">
-                {project.title}
-              </h1>
-              <p className="mt-4 text-sm text-muted md:text-base">{project.dates}</p>
-              <p className="mt-6 max-w-3xl text-base leading-8 text-muted md:text-lg">
-                {project.overview}
-              </p>
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-ink md:text-base">
-                {project.caseStudyLead}
-              </p>
-
-              <div className="mt-6 flex flex-wrap gap-2">
-                {project.stack.map((item) => (
-                  <span
-                    className="rounded-full border border-line bg-canvasStrong px-3 py-1.5 text-xs text-ink"
-                    key={item}
-                  >
-                    {item}
-                  </span>
+        </div>
+        <ProjectDiagram kind={project.slug} />
+        <div className="case-layout">
+          <aside>
+            <p className="eyebrow">Project notes</p>
+            <a href="#problem">The problem</a>
+            <a href="#implementation">Implementation</a>
+            <a href="#contributions">My contributions</a>
+            <a href="#decisions">Technical decisions</a>
+            <a href="#lessons">What I learned</a>
+          </aside>
+          <div className="case-content">
+            <section id="problem">
+              <h2>The problem</h2>
+              <p>{project.problem}</p>
+            </section>
+            <section id="implementation">
+              <h2>Implementation</h2>
+              <p>{project.approach}</p>
+            </section>
+            <section id="contributions">
+              <h2>My contributions</h2>
+              <ul>
+                {project.contributions.map((item) => (
+                  <li key={item}>{item}</li>
                 ))}
-              </div>
-            </div>
-
-            <aside className="rounded-[30px] border border-line bg-canvasStrong p-5 shadow-panel md:p-6">
-              <p className="font-mono text-[11px] uppercase tracking-section text-muted">
-                Snapshot
-              </p>
-              <p className="mt-4 text-sm leading-7 text-ink md:text-base">
-                {project.summary}
-              </p>
-              <div className="mt-6">
-                <p className="font-mono text-[11px] uppercase tracking-section text-muted">
-                  Key points
-                </p>
-                <ul className="mt-4 space-y-3">
-                  {project.highlights.map((highlight) => (
-                    <li
-                      className="flex gap-3 text-sm leading-7 text-ink"
-                      key={highlight}
-                    >
-                      <span className="mt-2 h-2 w-2 rounded-full bg-accent" />
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </aside>
+              </ul>
+            </section>
+            <section id="decisions">
+              <h2>Technical decisions</h2>
+              <p>{project.decision}</p>
+            </section>
+            <section id="lessons">
+              <h2>What I learned</h2>
+              <p>{project.lesson}</p>
+            </section>
           </div>
-        </section>
-
-        <section className="rounded-[30px] border border-line bg-surface px-5 py-6 shadow-panel md:px-8 md:py-8">
-          <div className="mb-7 grid gap-4 lg:grid-cols-[minmax(0,0.9fr),minmax(0,0.85fr)] lg:items-end">
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-section text-accent">
-                System layout
-              </p>
-              <h2 className="mt-3 font-display text-[2rem] font-semibold tracking-tight text-ink md:text-[2.35rem]">
-                How the project is structured.
-              </h2>
-            </div>
-            <p className="max-w-2xl text-sm leading-7 text-muted md:text-[15px] lg:justify-self-end">
-              A quick view of the parts that matter most: the main flow, the system boundaries, and where the work lives.
-            </p>
-          </div>
-
-          <ProjectDiagram columns={project.diagram} />
-        </section>
-
-        <section className="rounded-[30px] border border-line bg-surface px-5 py-6 shadow-panel md:px-8 md:py-8">
-          <div className="mb-7 grid gap-4 lg:grid-cols-[minmax(0,0.9fr),minmax(0,0.85fr)] lg:items-end">
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-section text-accent">
-                Representative views
-              </p>
-              <h2 className="mt-3 font-display text-[2rem] font-semibold tracking-tight text-ink md:text-[2.35rem]">
-                The project in a more concrete form.
-              </h2>
-            </div>
-            <p className="max-w-2xl text-sm leading-7 text-muted md:text-[15px] lg:justify-self-end">
-              These panels are meant to make the project easier to talk through in a recruiting or interview setting.
-            </p>
-          </div>
-
-          <div className="grid gap-6 xl:grid-cols-2">
-            {project.screens.map((screen) => (
-              <ProjectPreviewPanel
-                key={screen.title}
-                screen={screen}
-              />
-            ))}
-          </div>
-        </section>
-
-        <section className="rounded-[30px] border border-line bg-surface px-5 py-6 shadow-panel md:px-8 md:py-8">
-          <div className="mb-7 grid gap-4 lg:grid-cols-[minmax(0,0.9fr),minmax(0,0.85fr)] lg:items-end">
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-section text-accent">
-                Key decisions
-              </p>
-              <h2 className="mt-3 font-display text-[2rem] font-semibold tracking-tight text-ink md:text-[2.35rem]">
-                Decisions that shaped the build.
-              </h2>
-            </div>
-            <p className="max-w-2xl text-sm leading-7 text-muted md:text-[15px] lg:justify-self-end">
-              These are the choices that mattered most in the implementation, and why they were worth making.
-            </p>
-          </div>
-
-          <div className="grid gap-6 xl:grid-cols-3">
-            {project.decisions.map((decision) => (
-              <article
-                className="rounded-[28px] border border-line bg-canvasStrong p-5 shadow-panel"
-                key={decision.title}
-              >
-                <h3 className="font-display text-2xl font-semibold tracking-tight text-ink">
-                  {decision.title}
-                </h3>
-                <p className="mt-4 text-sm leading-7 text-muted">{decision.description}</p>
-                <p className="mt-4 rounded-2xl border border-line bg-surface px-4 py-4 text-sm leading-7 text-ink">
-                  {decision.impact}
-                </p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="rounded-[30px] border border-line bg-surface px-5 py-6 shadow-panel md:px-8 md:py-8">
-          <div className="mb-7 grid gap-4 lg:grid-cols-[minmax(0,0.9fr),minmax(0,0.85fr)] lg:items-end">
-            <div>
-              <p className="font-mono text-[11px] uppercase tracking-section text-accent">
-                Implementation notes
-              </p>
-              <h2 className="mt-3 font-display text-[2rem] font-semibold tracking-tight text-ink md:text-[2.35rem]">
-                Specific technical details.
-              </h2>
-            </div>
-            <p className="max-w-2xl text-sm leading-7 text-muted md:text-[15px] lg:justify-self-end">
-              Additional details that help explain how the project was actually built.
-            </p>
-          </div>
-
-          <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {project.architecture.map((detail) => (
-              <li
-                className="rounded-[24px] border border-line bg-canvasStrong px-5 py-5 text-sm leading-7 text-ink shadow-panel"
-                key={detail}
-              >
-                {detail}
-              </li>
-            ))}
-          </ul>
-        </section>
+        </div>
+        <div className="next-project">
+          <span>Next project</span>
+          <Link href={`/projects/${next.slug}`}>
+            {next.title} <Arrow />
+          </Link>
+        </div>
       </main>
-
       <Footer />
     </div>
   );
