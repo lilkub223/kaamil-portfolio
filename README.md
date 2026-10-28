@@ -1,41 +1,53 @@
 # Kaamil Khan — Software Engineering Portfolio
 
-A responsive Next.js 14 / React / TypeScript portfolio with a light editorial design, four project case studies, technical diagrams, and a downloadable resume. Styled with CSS and the existing Tailwind toolchain. Inter is fetched at build time and self-hosted by Next.js.
+A responsive Next.js / React / TypeScript portfolio with a light editorial design, four project case studies, technical diagrams, and a downloadable resume. Inter is self-hosted by Next.js; the existing Tailwind/CSS styling and React 18 stack are retained.
 
-## Development
+## Development and validation
+
+Use Node.js 20 or later.
 
 ```sh
 npm ci
 npm run dev
 ```
 
-## Validation
-
 ```sh
 npm run lint
 npm run build
+npm run test:browser
+npm audit --omit=dev
+```
+
+The Playwright suite uses an installed Google Chrome and starts the production server automatically. It checks all five pages at nine widths from 320px to 1920px, navigation/history, mobile menu and focus, reduced motion, text scaling, project routes, console errors, and an actual PDF download. Screenshots and traces are written to ignored test output directories.
+
+To check HTTP responses, metadata, icons, sharing images, and PDF delivery:
+
+```sh
 npm run start
-# In another terminal, with the production server running:
+# In another terminal:
 npm run test:smoke
 ```
 
-The smoke test checks project pages, section anchors, resume delivery, social images, production SEO URLs, the 404 route, and the redirect from the previous stock-exchange case-study URL. An alternative test origin can be passed after `--`.
+Pass an alternative origin after `--` to the HTTP smoke test, or set `PLAYWRIGHT_BASE_URL` for browser tests against an existing server. Protected Vercel previews require authentication.
 
 ## Content and configuration
 
-- `src/data/portfolio.ts`: verified profile links, project descriptions and case-study notes, skills, and experience.
+- `src/data/portfolio.ts`: profile links, project descriptions, case-study/validation notes, skills, and experience.
 - `src/components/portfolio-page.tsx`: homepage composition and personal introduction.
-- `src/components/project-diagram.tsx`: original architecture, API, compiler, and data-flow diagrams. These are explanatory diagrams, not product screenshots.
-- `src/app/projects/[slug]/page.tsx`: statically generated case studies.
-- `src/app/globals.css`: visual system and responsive layouts.
-- `public/resume/kaamil-khan-resume.pdf`: preferred general software engineering resume supplied for the redesign.
+- `src/components/project-diagram.tsx`: original diagrams, with accessible text equivalents and responsive CSS layouts.
+- `src/app/projects/[slug]/page.tsx`: the four statically generated project case studies.
+- `src/app/globals.css`: visual system and responsive styling.
+- `src/lib/site.ts`: canonical site URL; set `NEXT_PUBLIC_SITE_URL` for a different production domain.
+- `public/resume/kaamil-khan-resume.pdf`: the supplied preferred general software engineering resume.
 
-Set `NEXT_PUBLIC_SITE_URL` when deploying to a different domain. The default is the verified current public portfolio URL: https://kaamil-portfolio-one.vercel.app. Update the same fallback in `layout.tsx`, `sitemap.ts`, and `robots.ts` if the production domain changes permanently.
+Vercel Analytics is rendered only when `VERCEL=1`. The live deployment serves its script, while ordinary local builds omit the unavailable Vercel-only endpoint. Canonical URLs intentionally reference the production domain rather than preview hostnames.
 
-## Content sources
+## Maintenance
 
-Project descriptions were checked against the public Readlytics, LLM Software Testing Assistant, OurPascal Compiler, and Nutrition App repositories and the supplied resumes. Readlytics is dated January–June 2026. The system diagram depicts the implemented React → three backend services → shared PostgreSQL flow; planned RabbitMQ integration is deliberately omitted. OurPascal emits stack-based VM instructions.
+The refinement updates Next.js from 14.2.13 to 15.5.28 to resolve reported production advisories. Project routes use the asynchronous `params` API. PostCSS 8.5.32 is shared through an npm override because the framework otherwise pins an older nested release. Keep the lockfile and override together, and rerun the production dependency audit after dependency changes. The ESLint CLI replaces the deprecated `next lint` command.
 
-## Browser review
+## Evidence
 
-Desktop and mobile checks are recorded in `QA.md`. Lighthouse scores are not claimed without an audit.
+Project content is grounded in the supplied resumes and actual repositories. Readlytics remains dated January–June 2026. The architecture depicts the implemented three-service flow to a shared PostgreSQL database; RabbitMQ is not depicted as an active integration. Nutrition App validation is distinguished from an automated suite, which its scaffold does not provide.
+
+See `QA.md` for the final verification results and limitations.

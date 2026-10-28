@@ -12,6 +12,7 @@ export type Project = {
   approach: string;
   decision: string;
   lesson: string;
+  validation: string;
 };
 
 export const portfolioData = {
@@ -62,6 +63,8 @@ export const portfolioData = {
         "A React client calls three backend services: Node.js/Express for users, FastAPI for reading, and FastAPI for analytics. Each service connects to a shared PostgreSQL database. JWT authentication protects user-specific workflows.",
       decision:
         "Separate services organize the application by responsibility. Docker Compose defines the local environment, while Jenkins supports repeatable checks and deployment workflows. RabbitMQ is included in local infrastructure for planned extensions; it is not part of the implemented request flow shown here.",
+      validation:
+        "JWT-protected API behavior and PostgreSQL-backed flows were checked across services. The current repository includes frontend tests, Node.js user-service tests, Python API tests, and Jenkins stages that run these checks before building artifacts.",
       lesson:
         "Cross-service testing made data consistency and authentication behavior as important as individual endpoint correctness. This work strengthened my approach to tracing requests through service boundaries.",
     },
@@ -85,6 +88,8 @@ export const portfolioData = {
         "Spring Boot exposes chat, summary, and feedback endpoints. Input validation rejects blank or oversized messages before model calls. JUnit tests verify application behavior, and FastMCP tooling supports test generation, Maven execution, and coverage analysis.",
       decision:
         "Separate deterministic API checks from qualitative evaluation of model output. Status codes, validation, and response structure can be tested repeatedly; relevance, clarity, helpfulness, and chat-mode consistency need separate review.",
+      validation:
+        "JUnit controller tests cover blank and oversized messages, each chat mode, summarization, and feedback validation. Maven runs the suite and JaCoCo reports coverage; LLM response quality is evaluated separately because generated text can vary.",
       lesson:
         "A useful test suite needs failure cases as well as successful requests. Working with nondeterministic responses also made the limits of ordinary assertions explicit.",
     },
@@ -108,6 +113,8 @@ export const portfolioData = {
         "JavaCC defines the lexer and recursive-descent parser. A typed AST represents the program; symbol tables and scope handling support semantic validation. Code generation walks the AST and emits stack-based VM instructions.",
       decision:
         "Keep parsing, semantic checks, and code generation in distinct phases. The AST provides a shared representation without tying every phase directly to source text. Symbol tables track names and their scopes during validation.",
+      validation:
+        "Custom Pascal programs were used to check parsing, type consistency, scope handling, and generated instructions. The repository exposes the grammar and compiler phases for inspection; no automated coverage percentage is claimed.",
       lesson:
         "Small language features affect several compiler phases. Custom test programs helped trace errors from source syntax through type checking and instruction generation.",
     },
@@ -131,6 +138,8 @@ export const portfolioData = {
         "A team-built Django application uses server-rendered templates and PostgreSQL. Models and migrations support nutrition records, while management commands load recipe, ingredient, and disease-related CSV data.",
       decision:
         "Treat data imports as part of application development. Correcting CSV headers and ingredient references kept imported relationships consistent with the models and the user-facing workflows.",
+      validation:
+        "Validation focused on goal completion, weight-tracking inputs, selected conditions, and imported data relationships. The repository’s Django test module is a scaffold; this case study does not claim an automated application test suite.",
       lesson:
         "Useful full-stack features depend on reliable data underneath them. This project connected UI workflows, relational modeling, migrations, and dataset cleanup in a collaborative codebase.",
     },

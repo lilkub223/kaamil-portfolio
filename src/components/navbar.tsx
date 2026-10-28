@@ -1,65 +1,103 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { portfolioData } from "@/data/portfolio";
 import { Arrow } from "./icons";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
+  const header = useRef<HTMLElement>(null);
+  const toggle = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
-    let scheduled = false;
+    let frame = 0;
     const update = () => {
-      const position = window.scrollY + 150;
+      frame = 0;
+      const position =
+        window.scrollY + (header.current?.offsetHeight ?? 78) + 30;
       let current = "";
       for (const item of portfolioData.navItems) {
         const section = document.getElementById(item.id);
-        if (section && section.offsetTop <= position) current = item.id;
+        if (
+          section &&
+          section.getBoundingClientRect().top + window.scrollY <= position
+        )
+          current = item.id;
       }
       if (
         window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 16
+        document.documentElement.scrollHeight - 2
       )
         current = "contact";
       setActive(current);
-      scheduled = false;
     };
-    const onScroll = () => {
-      if (!scheduled) {
-        scheduled = true;
-        requestAnimationFrame(update);
-      }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
     };
-    const onKey = (event: KeyboardEvent) => {
-      if (
-        event.key === "Escape" &&
-        document
-          .getElementById("menu-toggle")
-          ?.getAttribute("aria-expanded") === "true"
-      ) {
-        setOpen(false);
-        document.getElementById("menu-toggle")?.focus();
-      }
+    const desktop = window.matchMedia("(min-width: 601px)");
+    const closeOnDesktop = () => {
+      if (desktop.matches) setOpen(false);
+      schedule();
     };
     update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("keydown", onKey);
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    window.addEventListener("hashchange", schedule);
+    window.addEventListener("popstate", schedule);
+    desktop.addEventListener("change", closeOnDesktop);
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("keydown", onKey);
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("hashchange", schedule);
+      window.removeEventListener("popstate", schedule);
+      desktop.removeEventListener("change", closeOnDesktop);
     };
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        toggle.current?.focus();
+      }
+    };
+    const outside = (event: PointerEvent) => {
+      if (!header.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const focusOutside = (event: FocusEvent) => {
+      if (!header.current?.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", outside);
+    document.addEventListener("focusin", focusOutside);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("focusin", focusOutside);
+    };
+  }, [open]);
+
   return (
-    <header className="site-header">
+    <header className="site-header" ref={header}>
       <div className="container header-inner">
-        <a className="wordmark" href="/#top" aria-label="Kaamil Khan, home">
+        <a
+          className="wordmark"
+          href="#top"
+          aria-label="Kaamil Khan, home"
+          onClick={() => setOpen(false)}
+        >
           kaamil<span>.</span>
         </a>
         <button
+          ref={toggle}
           id="menu-toggle"
           className="menu-toggle"
+          type="button"
           aria-expanded={open}
           aria-controls="primary-nav"
-          onClick={() => setOpen(!open)}
+          onClick={() => setOpen((value) => !value)}
         >
           {open ? "Close" : "Menu"}
           <span aria-hidden="true">{open ? "−" : "+"}</span>
@@ -74,7 +112,14 @@ export function Navbar() {
               key={item.id}
               href={`/#${item.id}`}
               aria-current={active === item.id ? "location" : undefined}
-              onClick={() => setOpen(false)}
+              onClick={() => {
+                setOpen(false);
+                // Move keyboard focus out of the closing menu without changing native hash history.
+                if (open)
+                  document
+                    .getElementById(item.id)
+                    ?.focus({ preventScroll: true });
+              }}
             >
               {item.label}
             </a>
@@ -84,6 +129,8 @@ export function Navbar() {
             href={portfolioData.links.resume}
             target="_blank"
             rel="noreferrer"
+            onClick={() => setOpen(false)}
+            aria-label="View resume PDF (opens in a new tab)"
           >
             Resume <Arrow diagonal />
           </a>

@@ -11,7 +11,7 @@ export function PortfolioPage() {
         Skip to content
       </a>
       <Navbar />
-      <main id="main">
+      <main id="main" tabIndex={-1}>
         <section className="container hero" aria-labelledby="hero-title">
           <div className="hero-topline">
             <p className="eyebrow">Kaamil Khan / Software engineer</p>
@@ -61,6 +61,7 @@ export function PortfolioPage() {
 
         <section
           id="projects"
+          tabIndex={-1}
           className="container work section"
           aria-labelledby="work-title"
         >
@@ -85,6 +86,7 @@ export function PortfolioPage() {
 
         <section
           id="about"
+          tabIndex={-1}
           className="about-section section"
           aria-labelledby="about-title"
         >
@@ -132,6 +134,7 @@ export function PortfolioPage() {
 
         <section
           id="experience"
+          tabIndex={-1}
           className="container section experience-section"
           aria-labelledby="experience-title"
         >
@@ -164,6 +167,7 @@ export function PortfolioPage() {
 
         <section
           id="contact"
+          tabIndex={-1}
           className="container contact-section section"
           aria-labelledby="contact-title"
         >
