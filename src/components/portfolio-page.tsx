@@ -76,12 +76,9 @@ export function PortfolioPage() {
             </p>
           </div>
           <ProjectCard project={data.projects[0]} featured />
-          <div className="project-pair">
-            {data.projects.slice(1, 3).map((project) => (
-              <ProjectCard project={project} key={project.slug} />
-            ))}
-          </div>
-          <ProjectCard project={data.projects[3]} compact />
+          {data.projects.slice(1).map((project) => (
+            <ProjectCard project={project} key={project.slug} horizontal />
+          ))}
         </section>
 
         <section
