@@ -18,11 +18,13 @@ Reviewed October 28, 2026. The existing forest-green/light identity, hero, proje
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `npm run lint`         | Pass, zero warnings/errors                                                                                                 |
 | `npm run build`        | Pass, type checking and static generation of all four case studies                                                         |
-| `npm run test:browser` | 13 passed against the final Next.js 15 production build                                                                    |
+| `npm run test:browser` | 14 passed against the final Next.js 15 production build                                                                    |
 | `npm run test:smoke`   | Pass: five pages, metadata/profile data, anchors, PDF, three PNG images, SVG icon, robots/sitemap, 404 and legacy redirect |
 | `npm audit --omit=dev` | Zero known production dependency vulnerabilities at review time                                                            |
 | `git diff --check`     | Pass                                                                                                                       |
 | Resume comparison      | Hosted PDF hash matches the supplied preferred resume                                                                      |
+
+An unnecessary static-only project restriction was removed after an invalid project URL caused Next.js to log an internal fallback error. An explicit regression checks both missing-project and ordinary 404 pages and their return-home links.
 
 The build emits a Browserslist dataset-age advisory. It does not prevent compilation.
 

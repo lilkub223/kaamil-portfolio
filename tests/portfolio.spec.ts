@@ -243,3 +243,19 @@ test("reduced motion and 200% text scaling retain usable content", async ({
     page.getByRole("heading", { name: "Reliable systems. Useful software." }),
   ).toBeVisible();
 });
+
+test("unknown project and ordinary routes return a real 404", async ({
+  page,
+}) => {
+  for (const route of ["/projects/missing-project", "/unknown-page"]) {
+    const response = await page.goto(route);
+    expect(response?.status()).toBe(404);
+    await expect(
+      page.getByRole("heading", { name: "This page took a wrong turn." }),
+    ).toBeVisible();
+    await page.getByRole("link", { name: "Return to portfolio" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Reliable systems. Useful software." }),
+    ).toBeVisible();
+  }
+});

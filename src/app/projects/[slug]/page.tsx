@@ -7,7 +7,6 @@ import { Footer } from "@/components/footer";
 import { Arrow, GithubIcon } from "@/components/icons";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
-export const dynamicParams = false;
 export function generateStaticParams() {
   return portfolioData.projects.map((project) => ({ slug: project.slug }));
 }
