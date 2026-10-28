@@ -6,12 +6,16 @@ import { ProjectDiagram } from "@/components/project-diagram";
 import { Footer } from "@/components/footer";
 import { Arrow, GithubIcon } from "@/components/icons";
 
-type ProjectPageProps = { params: { slug: string } };
+type ProjectPageProps = { params: Promise<{ slug: string }> };
+export const dynamicParams = false;
 export function generateStaticParams() {
   return portfolioData.projects.map((project) => ({ slug: project.slug }));
 }
-export function generateMetadata({ params }: ProjectPageProps): Metadata {
-  const project = getProjectBySlug(params.slug);
+export async function generateMetadata({
+  params,
+}: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
   if (!project) return {};
   return {
     title: `${project.title} — Project`,
@@ -39,8 +43,9 @@ export function generateMetadata({ params }: ProjectPageProps): Metadata {
     },
   };
 }
-export default function ProjectPage({ params }: ProjectPageProps) {
-  const project = getProjectBySlug(params.slug);
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
   if (!project) notFound();
   const index = portfolioData.projects.findIndex(
     (item) => item.slug === project.slug,
@@ -62,7 +67,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
           </Link>
         </div>
       </header>
-      <main id="main" className="container case-study">
+      <main id="main" tabIndex={-1} className="container case-study">
         <div className="case-heading">
           <p className="eyebrow">
             {project.category} / {project.dates}
@@ -83,12 +88,13 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         </div>
         <ProjectDiagram kind={project.slug} />
         <div className="case-layout">
-          <aside>
+          <aside aria-label="Project contents">
             <p className="eyebrow">Project notes</p>
             <a href="#problem">The problem</a>
             <a href="#implementation">Implementation</a>
             <a href="#contributions">My contributions</a>
             <a href="#decisions">Technical decisions</a>
+            <a href="#validation">Testing & validation</a>
             <a href="#lessons">What I learned</a>
           </aside>
           <div className="case-content">
@@ -111,6 +117,10 @@ export default function ProjectPage({ params }: ProjectPageProps) {
             <section id="decisions">
               <h2>Technical decisions</h2>
               <p>{project.decision}</p>
+            </section>
+            <section id="validation">
+              <h2>Testing & validation</h2>
+              <p>{project.validation}</p>
             </section>
             <section id="lessons">
               <h2>What I learned</h2>

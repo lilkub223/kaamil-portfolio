@@ -3,6 +3,7 @@ export function ProjectDiagram({ kind }: DiagramProps) {
   if (kind === "readlytics")
     return (
       <figure
+        role="img"
         className="project-visual architecture"
         aria-label="Readlytics architecture: React connects to user, reading, and analytics services; all three connect to PostgreSQL."
       >
@@ -66,8 +67,9 @@ export function ProjectDiagram({ kind }: DiagramProps) {
   if (kind === "llm-software-testing-project")
     return (
       <figure
+        role="img"
         className="project-visual api-visual"
-        aria-label="Spring Boot API endpoints with a test workflow using JUnit, Maven, and JaCoCo."
+        aria-label="Spring Boot POST endpoints: /api/chat, /api/chat/summary, and /api/chat/feedback. Tests run with JUnit and Maven; JaCoCo reports coverage and FastMCP supports the test workflow."
       >
         <figcaption>
           <span>API surface / Spring Boot</span>
@@ -102,6 +104,7 @@ export function ProjectDiagram({ kind }: DiagramProps) {
   if (kind === "ourpascal-compiler")
     return (
       <figure
+        role="img"
         className="project-visual compiler-visual"
         aria-label="Compiler pipeline: source to lexer and parser, AST, semantic checks, and stack-based VM instructions."
       >
@@ -113,6 +116,8 @@ export function ProjectDiagram({ kind }: DiagramProps) {
           <div className="source-snippet">
             <span>program.pas</span>
             <code>
+              var x: integer;
+              <br />
               <b>begin</b>
               <br />
               &nbsp; x := 2 + 3;
@@ -121,7 +126,7 @@ export function ProjectDiagram({ kind }: DiagramProps) {
               <br />
               <b>end.</b>
             </code>
-            <small>Illustrative source</small>
+            <small>Source excerpt</small>
           </div>
           <div className="pipeline">
             <div>
@@ -145,6 +150,7 @@ export function ProjectDiagram({ kind }: DiagramProps) {
     );
   return (
     <figure
+      role="img"
       className="project-visual nutrition-visual"
       aria-label="Nutrition App data flow: CSV datasets through Django import commands to PostgreSQL, supporting nutrition goals and weight tracking."
     >

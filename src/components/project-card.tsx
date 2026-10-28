@@ -16,11 +16,8 @@ export function ProjectCard({
     <article
       className={`project${featured ? " project-featured" : ""}${compact ? " project-compact" : ""}`}
     >
-      <Link
-        className="visual-link"
-        href={`/projects/${project.slug}`}
-        aria-label={`Explore ${project.title} case study`}
-      >
+      <Link className="visual-link" href={`/projects/${project.slug}`}>
+        <span className="sr-only">Explore {project.title} case study: </span>
         <ProjectDiagram kind={project.slug} />
       </Link>
       <div className="project-copy">
@@ -46,7 +43,7 @@ export function ProjectCard({
             href={project.github}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${project.title} on GitHub`}
+            aria-label={`Code for ${project.title} on GitHub (opens in a new tab)`}
           >
             <GithubIcon /> Code <Arrow diagonal />
           </a>

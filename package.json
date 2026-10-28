@@ -6,24 +6,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "test:smoke": "node scripts/check-site.mjs"
+    "lint": "eslint . --ext .js,.mjs,.ts,.tsx --max-warnings=0",
+    "test:smoke": "node scripts/check-site.mjs",
+    "test:browser": "playwright test"
   },
   "dependencies": {
     "@vercel/analytics": "1.3.1",
-    "next": "14.2.13",
+    "next": "15.5.28",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/node": "20.16.5",
     "@types/react": "18.3.5",
     "@types/react-dom": "18.3.0",
     "autoprefixer": "10.4.20",
     "eslint": "8.57.0",
-    "eslint-config-next": "14.2.13",
-    "postcss": "8.4.45",
+    "eslint-config-next": "15.5.28",
+    "postcss": "8.5.32",
     "tailwindcss": "3.4.10",
     "typescript": "5.5.4"
+  },
+  "overrides": {
+    "postcss": "$postcss"
   }
 }

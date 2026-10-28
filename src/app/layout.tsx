@@ -10,8 +10,7 @@ const inter = Inter({
   variable: "--font-body",
   display: "swap",
 });
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://kaamil-portfolio-one.vercel.app";
+import { siteUrl } from "@/lib/site";
 export const metadata: Metadata = {
   ...(siteUrl
     ? { metadataBase: new URL(siteUrl), alternates: { canonical: "/" } }
@@ -50,8 +49,34 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.variable}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "ProfilePage",
+              "@id": `${siteUrl}/#profile`,
+              url: siteUrl,
+              mainEntity: {
+                "@type": "Person",
+                "@id": `${siteUrl}/#person`,
+                name: portfolioData.name,
+                url: siteUrl,
+                description: portfolioData.site.description,
+                sameAs: [
+                  portfolioData.links.github,
+                  portfolioData.links.linkedin,
+                ],
+                alumniOf: {
+                  "@type": "CollegeOrUniversity",
+                  name: "DePaul University",
+                },
+              },
+            }).replace(/</g, "\\u003c"),
+          }}
+        />
         {children}
-        <Analytics />
+        {process.env.VERCEL === "1" && <Analytics />}
       </body>
     </html>
   );

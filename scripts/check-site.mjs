@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 
 const base = process.argv[2] || "http://127.0.0.1:3000";
+const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL || "https://kaamil-portfolio-one.vercel.app"
+).replace(/\/$/, "");
 const routes = [
   "/",
   "/projects/readlytics",
@@ -22,7 +25,19 @@ for (const route of routes) {
     if (route === "/")
       assert.ok(html.includes(`id="${id}"`), `Missing anchor #${id}`);
   }
-  console.log(`PASS ${route}: HTTP 200, heading, metadata, anchors`);
+  const structured = html.match(
+    /<script type="application\/ld\+json">([\s\S]*?)<\/script>/,
+  );
+  assert.ok(structured, `${route} needs structured profile data`);
+  assert.equal(JSON.parse(structured[1]).mainEntity.name, "Kaamil Khan");
+  assert.ok(html.includes('rel="icon"'), `${route} needs a browser icon`);
+  assert.ok(
+    html.includes('rel="apple-touch-icon"'),
+    `${route} needs a touch icon`,
+  );
+  console.log(
+    `PASS ${route}: HTTP 200, heading, metadata, profile data, icons, anchors`,
+  );
 }
 const pdf = await fetch(new URL("/resume/kaamil-khan-resume.pdf", base));
 assert.equal(pdf.status, 200);
@@ -34,7 +49,7 @@ assert.equal(
   "%PDF-",
 );
 console.log("PASS resume: valid PDF response");
-for (const image of ["/opengraph-image", "/twitter-image"]) {
+for (const image of ["/opengraph-image", "/twitter-image", "/apple-icon"]) {
   const response = await fetch(new URL(image, base));
   assert.equal(response.status, 200);
   assert.ok(response.headers.get("content-type")?.includes("image/png"));
@@ -59,7 +74,13 @@ for (const route of ["/robots.txt", "/sitemap.xml"]) {
   const response = await fetch(new URL(route, base));
   assert.equal(response.status, 200);
   const text = await response.text();
-  assert.ok(text.includes("https://kaamil-portfolio-one.vercel.app"));
+  assert.ok(text.includes(siteUrl));
   assert.ok(!text.includes("localhost"));
   console.log(`PASS ${route}: production URLs`);
 }
+
+const icon = await fetch(new URL("/icon.svg", base));
+assert.equal(icon.status, 200);
+assert.ok(icon.headers.get("content-type")?.includes("image/svg+xml"));
+assert.ok((await icon.text()).includes("<svg"));
+console.log("PASS favicon: valid SVG response");
