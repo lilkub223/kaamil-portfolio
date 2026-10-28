@@ -6,15 +6,17 @@ import { ProjectDiagram } from "./project-diagram";
 export function ProjectCard({
   project,
   featured = false,
+  horizontal = false,
   compact = false,
 }: {
   project: Project;
   featured?: boolean;
+  horizontal?: boolean;
   compact?: boolean;
 }) {
   return (
     <article
-      className={`project${featured ? " project-featured" : ""}${compact ? " project-compact" : ""}`}
+      className={`project${featured || horizontal ? " project-featured" : ""}${compact ? " project-compact" : ""}`}
     >
       <Link className="visual-link" href={`/projects/${project.slug}`}>
         <span className="sr-only">Explore {project.title} case study: </span>

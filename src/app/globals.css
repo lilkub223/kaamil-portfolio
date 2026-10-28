@@ -345,6 +345,13 @@ svg {
   padding-bottom: 44px;
   border-bottom: 1px solid var(--line);
 }
+.work > .project + .project {
+  margin-top: 40px;
+}
+.work > .project:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
 .project-featured .visual-link {
   grid-column: 2;
   grid-row: 1;
@@ -1137,6 +1144,9 @@ svg {
     gap: 22px;
     align-items: stretch;
     padding-bottom: 28px;
+  }
+  .work > .project + .project {
+    margin-top: 28px;
   }
   .project-featured .visual-link {
     order: 0;
