@@ -2007,3 +2007,101 @@ main[tabindex="-1"]:focus {
     font-size: 11px;
   }
 }
+
+/* Compact implementation evidence, scoped to project metadata and case studies. */
+.project-ownership {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-top: 3px;
+  color: var(--muted);
+}
+.project-evidence {
+  max-width: 850px;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.project-evidence h2 {
+  font-size: 24px;
+  margin: 10px 0 20px;
+}
+.evidence-image-link {
+  display: block;
+  border: 1px solid var(--line);
+}
+.evidence-image-link img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.project-evidence figcaption, .evidence-caption, .evidence-provenance {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-top: 14px;
+}
+.evidence-provenance {
+  font-size: 11px;
+}
+.evidence-provenance a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.project-evidence pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.8;
+  padding: 20px;
+  margin: 0;
+  background: #eef2ec;
+  border: 1px solid var(--line);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 2;
+}
+.evidence-code-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 14px;
+}
+.evidence-code-grid > div {
+  min-width: 0;
+}
+.evidence-code-grid h3 {
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+.project-evidence > .text-link {
+  font-size: 12px;
+  margin-top: 14px;
+}
+.evidence-download {
+  margin-left: 20px;
+}
+@media (max-width: 600px) {
+  .evidence-code-grid {
+    grid-template-columns: 1fr;
+  }
+  .project-evidence pre {
+    padding: 14px;
+    font-size: 11px;
+  }
+  .evidence-download {
+    margin-left: 0;
+    display: flex;
+  }
+}
+
+.case-demo {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 16px;
+  font-size: 12px;
+}
+.case-demo span {
+  color: var(--muted);
+}

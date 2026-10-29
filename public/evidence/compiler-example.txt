@@ -1,0 +1,41 @@
+OurPascal — local compiler evidence
+Captured October 29, 2026
+Repository revision: c4df7cdcf70c047d68cc8a858e9499ca3ad227d9
+JavaCC 7.0.13; Java 23.0.2
+
+Commands (JavaCC jar downloaded separately):
+mkdir -p build
+java -cp javacc-7.0.13.jar javacc -OUTPUT_DIRECTORY=build grammar/OurPascal.jj
+javac -d build build/*.java src/*.java
+java -cp build OurPascal proof-valid.pas
+
+Input (authored for this capture):
+program PortfolioProof;
+var x: integer;
+begin
+  x := 2 + 3;
+  writeln(x)
+end.
+
+Verbatim stdout:
+$beginPreAsm
+  %beginVarDecl
+    %var	@x,Integer,0
+    %var	@_tempVar1,Integer,3
+    %var	@_tempVar0,Integer,2
+    %var	@_tempVar2,Integer,0
+  %endVarDecl
+
+  %beginCode
+	intCopyOp	@_tempVar2,@_tempVar0
+	intAddVarVarOp	@_tempVar2,@_tempVar1
+	intCopyOp	@x,@_tempVar2
+	stdOutPrintLnOp	@x
+  %endCode
+$endPreAsm
+
+Negative input: replace x := 2 + 3 with x := 'not an integer'
+Verbatim diagnostic: java.lang.RuntimeException: Invalid assignment types
+The compiler catches this exception; a nonzero exit status is not asserted.
+Parser generation reported 0 errors and 4 existing lookahead warnings.
+The emitted instructions were inspected; a separate VM was not executed.

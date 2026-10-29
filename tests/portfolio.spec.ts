@@ -259,3 +259,43 @@ test("unknown project and ordinary routes return a real 404", async ({
     ).toBeVisible();
   }
 });
+
+for (const width of [1440, 390, 320]) {
+  test(`project evidence and ownership at ${width}px`, async ({ page, request }, info) => {
+    await page.setViewportSize({ width, height: 960 });
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
+    for (const [index, slug] of slugs.entries()) {
+      await page.goto(`/projects/${slug}`);
+      const independent = slug === "readlytics" || slug === "ourpascal-compiler";
+      await expect(page.locator(".case-heading .eyebrow")).toContainText(independent ? "Independent project" : "Team project");
+      await expect(page.locator("#contributions h2")).toHaveText(independent ? "What I built" : "My contributions");
+      await expect(page.locator(".case-content > section")).toHaveCount(6);
+      await expect(page.locator(".project-visual")).toBeVisible();
+      await expect(page.locator(".project-evidence")).toBeVisible();
+      const image = page.locator(".project-evidence img");
+      if (await image.count()) {
+        await image.scrollIntoViewIfNeeded();
+        await expect.poll(() => image.evaluate((e: HTMLImageElement) => e.complete && e.naturalWidth > 0)).toBe(true);
+        const dimensions = await image.evaluate((e: HTMLImageElement) => ({ ratio: e.clientWidth / e.clientHeight, natural: e.naturalWidth / e.naturalHeight, alt: e.alt }));
+        expect(Math.abs(dimensions.ratio - dimensions.natural)).toBeLessThan(0.02);
+        expect(dimensions.alt.length).toBeGreaterThan(50);
+        const response = await request.get((await page.locator(".evidence-image-link").getAttribute("href"))!);
+        expect(response.status()).toBe(200);
+        expect(response.headers()["content-type"]).toContain("image/webp");
+      }
+      for (const link of await page.locator('.project-evidence a[href^="/evidence/"]').all()) {
+        expect((await request.get((await link.getAttribute("href"))!)).status()).toBe(200);
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+      await page.locator(".project-evidence").screenshot({ path: info.outputPath(`${slug}-${width}.png`) });
+      await page.locator(".next-project a").click();
+      await expect(page).toHaveURL(new RegExp(`/projects/${slugs[(index + 1) % slugs.length]}$`));
+    }
+    await page.goto("/");
+    await expect(page.locator(".project-ownership")).toHaveText(["Independent project", "Team project", "Independent project", "Team project"]);
+    await expect(page.locator(".project-featured")).toHaveCount(4);
+    expect(errors).toEqual([]);
+  });
+}
