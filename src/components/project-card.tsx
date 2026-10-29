@@ -24,7 +24,10 @@ export function ProjectCard({
       </Link>
       <div className="project-copy">
         <div className="project-meta">
-          <span>{project.category}</span>
+          <span>
+            {project.category}
+            <small className="project-ownership">{project.ownership}</small>
+          </span>
           <span>{project.dates}</span>
         </div>
         <h3>

@@ -1,0 +1,23 @@
+LLM Software Testing Assistant — local test evidence
+Captured October 29, 2026
+Repository revision: b7bca7c31c224f83d180804f7e63a492fbf5539e
+Command: cd sprint2-app && mvn -B test
+Environment: Maven 3.9.14, Java 25.0.2
+
+Verbatim result excerpt (local paths and unrelated startup output omitted):
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jacoco:0.8.15:report (report) @ chatbot ---
+[INFO] Analyzed bundle 'chatbot' with 9 classes
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.131 s
+[INFO] Finished at: 2026-10-29T16:41:10-05:00
+[INFO] ------------------------------------------------------------------------
+
+Scope: controller tests with mocked ChatService and FeedbackService.
+This is not a live-model evaluation or a claim of complete application coverage.

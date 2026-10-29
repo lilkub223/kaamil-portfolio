@@ -3,8 +3,10 @@ export type Project = {
   slug: string;
   title: string;
   category: string;
+  ownership: "Independent project" | "Team project";
   dates: string;
   github: string;
+  liveDemo?: string;
   summary: string;
   stack: string[];
   contributions: string[];
@@ -38,10 +40,12 @@ export const portfolioData = {
   projects: [
     {
       slug: "readlytics",
+      ownership: "Independent project",
       title: "Readlytics",
       category: "Distributed applications",
       dates: "Jan – Jun 2026",
       github: "https://github.com/lilkub223/readlytics",
+      liveDemo: "https://readlytics-web.onrender.com",
       summary:
         "A reading platform that connects personal bookshelves, activity tracking, and reading analytics.",
       stack: [
@@ -66,10 +70,11 @@ export const portfolioData = {
       validation:
         "JWT-protected API behavior and PostgreSQL-backed flows were checked across services. The current repository includes frontend tests, Node.js user-service tests, Python API tests, and Jenkins stages that run these checks before building artifacts.",
       lesson:
-        "Cross-service testing made data consistency and authentication behavior as important as individual endpoint correctness. This work strengthened my approach to tracing requests through service boundaries.",
+        "Building the full stack independently meant tracing one action across the React client, JWT checks, reading records, and analytics queries. A successful write is only part of the workflow: the library and analytics views also need to agree about the resulting data.",
     },
     {
       slug: "llm-software-testing-project",
+      ownership: "Team project",
       title: "LLM Software Testing Assistant",
       category: "Java backend & testing",
       dates: "Apr – Jun 2026",
@@ -89,12 +94,13 @@ export const portfolioData = {
       decision:
         "Separate deterministic API checks from qualitative evaluation of model output. Status codes, validation, and response structure can be tested repeatedly; relevance, clarity, helpfulness, and chat-mode consistency need separate review.",
       validation:
-        "JUnit controller tests cover blank and oversized messages, each chat mode, summarization, and feedback validation. Maven runs the suite and JaCoCo reports coverage; LLM response quality is evaluated separately because generated text can vary.",
+        "JUnit controller tests cover blank and oversized messages, each chat mode, summarization, and feedback validation. A fresh Maven run passed all 10 controller tests and generated a JaCoCo report. These tests mock the model and feedback services; they do not measure live model quality or complete application coverage.",
       lesson:
-        "A useful test suite needs failure cases as well as successful requests. Working with nondeterministic responses also made the limits of ordinary assertions explicit.",
+        "Mocking the model service lets me test request handling repeatedly without depending on generated wording. A passing controller test verifies the API contract; it does not establish whether an LLM answer is useful or correct.",
     },
     {
       slug: "ourpascal-compiler",
+      ownership: "Independent project",
       title: "OurPascal Compiler",
       category: "Languages & systems",
       dates: "Sep – Nov 2025",
@@ -114,12 +120,13 @@ export const portfolioData = {
       decision:
         "Keep parsing, semantic checks, and code generation in distinct phases. The AST provides a shared representation without tying every phase directly to source text. Symbol tables track names and their scopes during validation.",
       validation:
-        "Custom Pascal programs were used to check parsing, type consistency, scope handling, and generated instructions. The repository exposes the grammar and compiler phases for inspection; no automated coverage percentage is claimed.",
+        "Custom Pascal programs were used to check parsing, type consistency, scope handling, and generated instructions. For the example above, I regenerated the parser with JavaCC, compiled the Java sources, and ran the compiler. It emitted integer-addition instructions for the valid program and reported “Invalid assignment types” for a string assigned to an integer. This is a focused example, not a complete language test suite.",
       lesson:
-        "Small language features affect several compiler phases. Custom test programs helped trace errors from source syntax through type checking and instruction generation.",
+        "An assignment connects parsing, symbol lookup, type checking, and code generation. Tracing a small program through those stages made it easier to distinguish a grammar problem from a semantic error or an incorrect emitted instruction.",
     },
     {
       slug: "nutrition-app",
+      ownership: "Team project",
       title: "Nutrition App",
       category: "Full-stack development",
       dates: "Feb – Apr 2026",
@@ -137,11 +144,11 @@ export const portfolioData = {
       approach:
         "A team-built Django application uses server-rendered templates and PostgreSQL. Models and migrations support nutrition records, while management commands load recipe, ingredient, and disease-related CSV data.",
       decision:
-        "Treat data imports as part of application development. Correcting CSV headers and ingredient references kept imported relationships consistent with the models and the user-facing workflows.",
+        "Keep nutrition targets on the account, custom goals as related records, and weight changes as dated entries. Goal updates are scoped to the signed-in user. Correcting CSV headers and ingredient references also kept imported relationships consistent with these user-facing workflows.",
       validation:
         "Validation focused on goal completion, weight-tracking inputs, selected conditions, and imported data relationships. The repository’s Django test module is a scaffold; this case study does not claim an automated application test suite.",
       lesson:
-        "Useful full-stack features depend on reliable data underneath them. This project connected UI workflows, relational modeling, migrations, and dataset cleanup in a collaborative codebase.",
+        "A goal on screen depends on several related records: the account, nutrition targets, and dated weight entries. Keeping those relationships consistent through migrations and CSV imports mattered as much as the form itself in our shared codebase.",
     },
   ] satisfies Project[],
   skillGroups: [

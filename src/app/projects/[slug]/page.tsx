@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { portfolioData, getProjectBySlug } from "@/data/portfolio";
 import { ProjectDiagram } from "@/components/project-diagram";
+import { ProjectEvidence } from "@/components/project-evidence";
 import { Footer } from "@/components/footer";
 import { Arrow, GithubIcon } from "@/components/icons";
 
@@ -51,6 +52,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   );
   const next =
     portfolioData.projects[(index + 1) % portfolioData.projects.length];
+  const contributionsHeading =
+    project.ownership === "Independent project"
+      ? "What I built"
+      : "My contributions";
   return (
     <div id="top">
       <a className="skip-link" href="#main">
@@ -69,7 +74,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <main id="main" tabIndex={-1} className="container case-study">
         <div className="case-heading">
           <p className="eyebrow">
-            {project.category} / {project.dates}
+            {project.ownership} / {project.category} / {project.dates}
           </p>
           <h1>{project.title}</h1>
           <p className="case-lead">{project.summary}</p>
@@ -84,14 +89,28 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </a>
             <p className="stack">{project.stack.join(" / ")}</p>
           </div>
+          {"liveDemo" in project && (
+            <p className="case-demo">
+              <a
+                className="text-link"
+                href={project.liveDemo}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Live demo <Arrow diagonal />
+              </a>
+              <span>Hosted on Render; services may take a moment to wake up.</span>
+            </p>
+          )}
         </div>
         <ProjectDiagram kind={project.slug} />
+        <ProjectEvidence slug={project.slug} />
         <div className="case-layout">
           <aside aria-label="Project contents">
             <p className="eyebrow">Project notes</p>
             <a href="#problem">The problem</a>
             <a href="#implementation">Implementation</a>
-            <a href="#contributions">My contributions</a>
+            <a href="#contributions">{contributionsHeading}</a>
             <a href="#decisions">Technical decisions</a>
             <a href="#validation">Testing & validation</a>
             <a href="#lessons">What I learned</a>
@@ -106,7 +125,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <p>{project.approach}</p>
             </section>
             <section id="contributions">
-              <h2>My contributions</h2>
+              <h2>{contributionsHeading}</h2>
               <ul>
                 {project.contributions.map((item) => (
                   <li key={item}>{item}</li>
