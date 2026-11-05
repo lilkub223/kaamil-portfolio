@@ -81,10 +81,25 @@ test("section navigation, active states, direct anchors, and native history", as
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
+  expect(
+    await page.locator("main > section").evaluateAll((sections) =>
+      sections.map((section) => section.id || "hero"),
+    ),
+  ).toEqual(["hero", "about", "projects", "experience", "contact"]);
+  await expect(page.locator("main > .section .eyebrow")).toHaveText([
+    "01 / About & expertise",
+    "02 / Selected work",
+    "03 / Experience",
+    "04 / What’s next",
+  ]);
+  await expect(page.locator(".hero-name")).toHaveText("Kaamil Khan");
   const nav = page.getByRole("navigation", { name: "Main navigation" });
+  await expect(nav.locator("a:not(.nav-resume)")).toHaveText([
+    "About", "Work", "Experience", "Contact",
+  ]);
   for (const [label, id] of [
-    ["Work", "projects"],
     ["About", "about"],
+    ["Work", "projects"],
     ["Experience", "experience"],
     ["Contact", "contact"],
   ]) {
