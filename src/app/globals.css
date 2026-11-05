@@ -170,7 +170,12 @@ svg {
   justify-content: space-between;
   margin-bottom: 25px;
 }
+.hero-identity {
+  text-align: left;
+}
 .hero-name {
+  /* Align the visible letter edges despite the fonts’ different side bearings. */
+  text-indent: -0.077em;
   font-size: clamp(28px, 3vw, 36px);
   font-weight: 550;
   letter-spacing: -0.035em;
@@ -178,6 +183,7 @@ svg {
 }
 .hero-identity .eyebrow {
   margin-top: 8px;
+  text-indent: -0.07em;
 }
 .availability {
   display: inline-flex;
