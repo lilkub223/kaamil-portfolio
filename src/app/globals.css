@@ -170,6 +170,15 @@ svg {
   justify-content: space-between;
   margin-bottom: 25px;
 }
+.hero-name {
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 550;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+.hero-identity .eyebrow {
+  margin-top: 8px;
+}
 .availability {
   display: inline-flex;
   align-items: center;

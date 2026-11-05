@@ -14,7 +14,10 @@ export function PortfolioPage() {
       <main id="main" tabIndex={-1}>
         <section className="container hero" aria-labelledby="hero-title">
           <div className="hero-topline">
-            <p className="eyebrow">Kaamil Khan / Software engineer</p>
+            <div className="hero-identity">
+              <p className="hero-name">Kaamil Khan</p>
+              <p className="eyebrow">Software engineer</p>
+            </div>
             <span className="availability">
               <i /> Open to early-career roles
             </span>
@@ -60,28 +63,6 @@ export function PortfolioPage() {
         </section>
 
         <section
-          id="projects"
-          tabIndex={-1}
-          className="container work section"
-          aria-labelledby="work-title"
-        >
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">01 / Selected work</p>
-              <h2 id="work-title">From API to application.</h2>
-            </div>
-            <p>
-              Four projects. Different problems.
-              <br /> A closer look at how I build.
-            </p>
-          </div>
-          <ProjectCard project={data.projects[0]} featured />
-          {data.projects.slice(1).map((project) => (
-            <ProjectCard project={project} key={project.slug} horizontal />
-          ))}
-        </section>
-
-        <section
           id="about"
           tabIndex={-1}
           className="about-section section"
@@ -89,7 +70,7 @@ export function PortfolioPage() {
         >
           <div className="container about-grid">
             <div className="about-copy">
-              <p className="eyebrow">02 / About & expertise</p>
+              <p className="eyebrow">01 / About & expertise</p>
               <h2 id="about-title">
                 Good software starts
                 <br /> with the fundamentals.
@@ -127,6 +108,28 @@ export function PortfolioPage() {
               </dl>
             </div>
           </div>
+        </section>
+
+        <section
+          id="projects"
+          tabIndex={-1}
+          className="container work section"
+          aria-labelledby="work-title"
+        >
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">02 / Selected work</p>
+              <h2 id="work-title">From API to application.</h2>
+            </div>
+            <p>
+              Four projects. Different problems.
+              <br /> A closer look at how I build.
+            </p>
+          </div>
+          <ProjectCard project={data.projects[0]} featured />
+          {data.projects.slice(1).map((project) => (
+            <ProjectCard project={project} key={project.slug} horizontal />
+          ))}
         </section>
 
         <section

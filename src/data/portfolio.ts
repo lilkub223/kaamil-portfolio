@@ -32,8 +32,8 @@ export const portfolioData = {
     resume: "/resume/kaamil-khan-resume.pdf",
   },
   navItems: [
-    { id: "projects", label: "Work" },
     { id: "about", label: "About" },
+    { id: "projects", label: "Work" },
     { id: "experience", label: "Experience" },
     { id: "contact", label: "Contact" },
   ] satisfies NavItem[],
